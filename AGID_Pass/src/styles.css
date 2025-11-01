@@ -1,0 +1,89 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Container que envolve todo o app */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* ocupa toda a altura da tela */
+}
+
+/* Conteúdo principal empurra o footer para baixo */
+.main-content {
+  flex: 1; /* ocupa o espaço restante entre navbar e footer */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centraliza verticalmente o conteúdo */
+  padding: 2rem;
+}
+
+/* Formulário com largura decente */
+.main-content form {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+
+/* Faz com que o body e html ocupem toda a altura */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Container principal de cadastro */
+.full-height-container {
+  min-height: calc(100vh - 80px - 50px); /* altura da tela menos navbar e footer (ajuste se necessário) */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centraliza verticalmente */
+  align-items: center;     /* centraliza horizontalmente */
+  padding: 2rem;
+  background-color: #f5f5f5; /* opcional, deixa a seção com cor de fundo */
+}
+
+/* Formulários para largura máxima decente */
+.full-height-container form {
+  width: 100%;
+  max-width: 600px;
+}
+
+
+/* src/styles.css */
+.navbar.custom-navbar {
+  background-color: #213b4b !important; /* cor desejada */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Navbar brand */
+.navbar.custom-navbar .navbar-brand {
+  color: #FFFFFF !important;
+}
+
+/* Botões da navbar */
+.nav-btn {
+  display: inline-block;
+  margin-left: 15px;
+  padding: 8px 18px;
+  background-color: #FFD700; /* Amarelo */
+  color: #16325B; /* Azul escuro */
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background-color: #FFC107;
+  color: #0F2340;
+  transform: translateY(-2px);
+}
+
+.nav-btn.active {
+  background-color: #FFB300;
+  color: #0F2340;
+}

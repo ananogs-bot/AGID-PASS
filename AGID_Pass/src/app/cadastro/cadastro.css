@@ -1,0 +1,22 @@
+/* Container principal: ocupa toda a altura da tela */
+.cadastro-page {
+  display: flex;
+  min-height: calc(100vh - 56px); /* subtraindo navbar se tiver 56px de altura */
+}
+
+/* Formulário à esquerda */
+.form-container {
+  flex: 1;
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Imagem à direita */
+.image-container {
+  flex: 1;
+  background: url('/assets/fundoCadastro.jpg') no-repeat center center;
+  background-size: cover;
+}
+

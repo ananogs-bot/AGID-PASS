@@ -1,0 +1,28 @@
+.cadastro-page {
+  display: flex;
+  min-height: calc(100vh - 70px); /* 70px pode ser a altura da navbar */
+}
+
+.form-container {
+  flex: 1;
+  padding: 3rem;
+  background-color: #F5F5F5;
+  overflow-y: auto; /* permite scroll se o formulário for muito grande */
+}
+
+.image-container {
+  flex: 1;
+  background-image: url('/assets/fundoCadastro.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.image-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

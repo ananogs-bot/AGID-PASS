@@ -1,0 +1,63 @@
+<div *ngIf="profissional" class="profissional-info container my-5 p-4 shadow-sm rounded bg-light">
+  <div class="row g-4 align-items-start">
+
+    <!-- Imagem -->
+    <div class="col-md-4 text-center">
+      <img [src]="profissional.profissional_imagem || './assets/default-user.jpg'"
+           alt="Foto do profissional"
+           class="img-fluid rounded border"
+           style="width: 100%; max-width: 300px; height: 300px; object-fit: cover;">
+    </div>
+
+    <!-- Informações -->
+    <div class="col-md-8">
+      <h2 class="fw-bold">{{ profissional.profissional_nome }}</h2>
+      <p class="mb-1">📞 {{ profissional.profissional_telefone }}</p>
+      <p class="mb-2">📍 {{ profissional.profissional_endereco }}</p>
+
+      <p class="mb-3">
+        Categorias:
+        <span *ngFor="let cat of profissional.categorias.split(' - ')"
+              class="badge bg-primary me-1 mb-1">{{ cat }}</span>
+      </p>
+
+      <p class="profissional-descricao">{{ profissional.profissional_descricao }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- ----- SEÇÃO DE AGENDAMENTO ----- -->
+<div class="agendamento-section container my-5 p-4 shadow-sm rounded bg-light">
+  <h3 class="fw-bold mb-4">Agendar com {{ profissional?.profissional_nome }}</h3>
+
+  <form (ngSubmit)="agendar()">
+
+    <div class="mb-3">
+      <label>Categoria</label>
+      <select [(ngModel)]="categoriaSelecionada" name="categoria" class="form-control" required>
+        <option *ngFor="let cat of profissional.categoriasList" [value]="cat.categoria_id">{{ cat.categoria_nome }}</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label>Forma de pagamento</label>
+      <select [(ngModel)]="pagamentoSelecionado" name="pagamento" class="form-control" required>
+        <option value="1">Cartão de Crédito</option>
+        <option value="2">Pix</option>
+        <option value="3">Dinheiro</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label>Data</label>
+      <input [(ngModel)]="dataAgendamento" name="data" type="date" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Horário</label>
+      <input [(ngModel)]="horarioAgendamento" name="horario" type="time" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Agendar</button>
+  </form>
+</div>

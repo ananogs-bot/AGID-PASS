@@ -1,0 +1,39 @@
+<div class="mt-5 pb-5">
+  <div class="container px-4 px-lg-5 mt-4">
+    <h1 class="fw-bold mb-4">Conheça nossos colaboradores</h1>
+
+    <div class="row g-4 justify-content-center">
+      <div class="col-lg-4 col-md-6 col-sm-12 d-flex" *ngFor="let profissional of profissionais">
+        <div class="card shadow-sm flex-fill h-100">
+          <div class="card-img-container">
+            <img [src]="profissional.profissional_imagem || './assets/default-user.jpg'" class="card-img-top"
+              alt="Imagem do profissional">
+          </div>
+          <div class="card-body text-center d-flex flex-column justify-content-between">
+            <div>
+              <h5 class="card-title fw-bold mb-2">{{ profissional.profissional_nome }}</h5>
+              <div class="d-flex flex-wrap justify-content-center mb-3">
+                <span *ngFor="let categoria of profissional.categorias" class="badge bg-primary m-1">
+                  {{ categoria }}
+                </span>
+              </div>
+            </div>
+            <p class="text-muted small mt-auto mb-0">
+              📍 {{ profissional.profissional_endereco }}
+            </p>
+
+            <!-- Botão de agendamento -->
+            <div class="d-grid mt-3">
+              <button class="btn btn-info" [routerLink]="['/agendamento', profissional.profissional_id]">
+                Agendar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-dark text-white text-center py-3 mt-5">
+    &copy; 2025 AGID PASS. Todos os direitos reservados.
+  </footer>

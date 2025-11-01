@@ -1,0 +1,5 @@
+.profissional-descricao {
+  max-height: 150px; /* Limite de altura */
+  overflow: hidden;  /* Esconde o excesso */
+  text-overflow: ellipsis;
+}
