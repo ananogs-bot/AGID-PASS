@@ -1,5 +1,70 @@
-<h1>Carrinho</h1>
+<!-- 1️⃣ Seção das Assinaturas -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-2"><strong>Escolha suas assinaturas:</strong></h2>
+    <h5 class="text-center mb-5 fw-normal text-muted">
+      Adicione quantas quiser — apenas uma de cada tipo!
+    </h5>
 
-<!-- opções escolhidas de uso contínuo -->
-<!-- permitir remover, e apresentar a quantidade de meses de assinatura, quanto mais meses menos caro fica -->
-<!-- botão para finalizar -->
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+      <div class="col mb-4" *ngFor="let plano of planos">
+        <div class="card mb-4 rounded-4 shadow-sm">
+          <div class="card-header py-3 mb-3">
+            <h3 class="my-1 fw-normal">{{ plano.nome }}</h3>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title mb-4">
+              R${{ plano.preco }}
+              <small class="text-muted fw-light">/mês</small>
+            </h1>
+
+            <button
+              class="w-100 btn btn-lg"
+              [ngClass]="plano.adicionado ? 'btn-success' : 'btn-outline-primary'"
+              (click)="plano.adicionado ? removerDoCarrinho(plano) : adicionarAoCarrinho(plano)"
+            >
+              {{ plano.adicionado ? '✅ Adicionado' : 'Adicionar' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2️⃣ Ícone flutuante do carrinho -->
+<div class="carrinho-btn" (click)="toggleCarrinho()">
+  <i class="bi bi-cart-fill"></i>
+</div>
+
+<!-- 3️⃣ Barra lateral do carrinho -->
+<div class="carrinho-sidebar" [class.show]="mostrarCarrinho">
+  <div class="carrinho-header d-flex justify-content-between align-items-center">
+    <h4><i class="bi bi-cart-check"></i> Seu Carrinho</h4>
+    <button class="btn-close" (click)="toggleCarrinho()"></button>
+  </div>
+
+  <div *ngIf="carrinho.length === 0" class="text-center text-muted mt-4">
+    Nenhum plano adicionado ainda.
+  </div>
+
+  <ul class="list-group list-group-flush mt-3">
+    <li class="list-group-item d-flex justify-content-between align-items-center"
+        *ngFor="let item of carrinho">
+      <div>
+        <strong>{{ item.nome }}</strong>
+        <p class="mb-0 text-muted">R${{ item.preco }}/mês</p>
+      </div>
+      <button class="btn btn-sm btn-outline-danger" (click)="removerDoCarrinho(item)">
+        <i class="bi bi-trash"></i>
+      </button>
+    </li>
+  </ul>
+
+  <div class="mt-auto p-3 border-top">
+    <h5>Total: <strong>R${{ total }}</strong></h5>
+    <button class="btn btn-primary w-100 mt-3" (click)="finalizarAssinatura()">
+      Finalizar assinatura
+    </button>
+  </div>
+</div>

@@ -4,10 +4,11 @@ import { Cliente } from '../services/models/models';
 import { ClienteService } from '../services/api/cliente.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   selector: 'app-cadastro-cliente',
   templateUrl: './cadastro-cliente.html',
   styleUrls: ['./cadastro-cliente.css']

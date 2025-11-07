@@ -28,7 +28,7 @@ export class Login {
         if (res.success) {
           // redireciona conforme o tipo de usuário
           if (this.tipo === 'cliente') {
-            this.router.navigate(['/catalogo']);
+            this.router.navigate(['/carrinho']);
           } else if (this.tipo === 'profissional') {
             this.router.navigate(['/beneficios']);
           }

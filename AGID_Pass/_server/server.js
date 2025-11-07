@@ -152,6 +152,45 @@ app.get('/profissionais', (req, res) => {
   });
 });
 
+// Nova rota exclusiva para o agendamento (detalhes completos)
+app.get('/profissionais/:id/detalhes', (req, res) => {
+  const id = req.params.id;
+
+  const sqlProfissional = `SELECT * FROM PROFISSIONAL WHERE profissional_id = ?`;
+
+  db.query(sqlProfissional, [id], (err, result) => {
+    if (err) {
+      console.error('Erro ao buscar profissional:', err);
+      return res.status(500).json({ error: 'Erro no servidor' });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({ error: 'Profissional não encontrado' });
+    }
+
+    const profissional = result[0];
+
+    const sqlCategorias = `
+      SELECT c.categoria_id, c.categoria_nome
+      FROM CATEGORIA c
+      INNER JOIN PROFISSIONAL_CATEGORIA pc ON c.categoria_id = pc.categoria_id
+      WHERE pc.profissional_id = ?
+    `;
+
+    db.query(sqlCategorias, [id], (err, categorias) => {
+      if (err) {
+        console.error('Erro ao buscar categorias:', err);
+        return res.status(500).json({ error: 'Erro ao buscar categorias' });
+      }
+
+      profissional.categoriasList = categorias;
+
+      res.json(profissional);
+    });
+  });
+});
+
+
 
 // Buscar profissional por ID
 app.get('/profissionais/:id', (req, res) => {
@@ -321,18 +360,27 @@ app.post('/agendamentos', (req, res) => {
 
     const categoria_id = result[0].categoria_id;
 
+    // Inserir o agendamento com classificação nula e confirmação false
     const sqlInsert = `
       INSERT INTO AGENDAMENTO
-        (cliente_id, profissional_id, categoria_id, pagamento_id, agendamento_data_agendamento, agendamento_horario)
-      VALUES (?, ?, ?, ?, ?, ?)
+        (cliente_id, profissional_id, categoria_id, pagamento_id, agendamento_data_agendamento, agendamento_horario, agendamento_classificacao, agendamento_confirmacao)
+      VALUES (?, ?, ?, ?, ?, ?, NULL, FALSE)
     `;
 
-    db.query(sqlInsert, [cliente_id, profissional_id, categoria_id, pagamento_id, agendamento_data_agendamento, agendamento_horario], (err) => {
-      if(err) return res.status(500).send(err);
-      res.json({ message: 'Agendamento criado' });
+    db.query(sqlInsert, [
+      cliente_id,
+      profissional_id,
+      categoria_id,
+      pagamento_id,
+      agendamento_data_agendamento,
+      agendamento_horario
+    ], (err) => {
+      if (err) return res.status(500).send(err);
+      res.json({ message: 'Agendamento criado com sucesso!' });
     });
   });
 });
+
 
 app.put('/agendamentos/:id', (req, res) => {
   const { cliente_id, profissional_id, categoria_id, pagamento_id, agendamento_data_agendamento, agendamento_horario } = req.body;

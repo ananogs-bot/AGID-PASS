@@ -7,6 +7,7 @@ import { Login } from './login/login';
 import { Catalogo } from './catalogo/catalogo';
 import { Beneficios } from './beneficios/beneficios';
 import { Agendamento } from './agendamento/agendamento';
+import { Carrinho } from './carrinho/carrinho';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -18,7 +19,8 @@ export const routes: Routes = [
   { path: 'catalogo', component: Catalogo },
   { path: 'beneficios', component: Beneficios },
   { path: 'agendamento', component: Agendamento },
-  { path: 'agendamento/:id', component: Agendamento }
+  { path: 'agendamento/:id', component: Agendamento },
+  { path: 'carrinho', component: Carrinho }
 ];
 
 

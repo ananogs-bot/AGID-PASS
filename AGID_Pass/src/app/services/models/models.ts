@@ -50,4 +50,6 @@ export interface Agendamento {
   profissional_id: string;
   categoria_id: number;
   pagamento_id: string;
+  agendamento_confirmacao?: boolean;
+  agendamento_classificacao?: number;
 }

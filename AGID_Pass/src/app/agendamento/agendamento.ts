@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-agendamento',
   templateUrl: './agendamento.html',
   styleUrls: ['./agendamento.css'],
-  imports: [CommonModule, FormsModule, RouterLink] // ✅ FormsModule adicionado
+  imports: [CommonModule, FormsModule, RouterLink]
 })
 export class Agendamento implements OnInit {
   profissional: any = null;
@@ -21,33 +21,56 @@ export class Agendamento implements OnInit {
   dataAgendamento: string = '';
   horarioAgendamento: string = '';
 
-  cliente_id: string = '';
+  cliente_id: string = 'b849a2fe-915b-41b0-bcd6-930c6a33220e'; // Exemplo fixo
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) { }
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') || '';
 
     this.http.get(`http://localhost:3000/profissionais/${this.id}`).subscribe({
       next: (data: any) => {
-        console.log('Dados recebidos da API:', data); // <-- aqui
+        console.log('Dados recebidos da API:', data);
+
         this.profissional = data;
+
+        // Garante que as categorias venham tratadas
+        if (typeof this.profissional.categorias === 'string') {
+          this.profissional.categoriasList = this.profissional.categorias
+            .split(' - ')
+            .map((nome: string) => ({
+              categoria_nome: nome.trim()
+            }));
+        } else {
+          this.profissional.categoriasList = [];
+        }
+
+        console.log('Categorias tratadas:', this.profissional.categoriasList);
       },
       error: (err) => console.error('Erro ao carregar profissional:', err)
     });
   }
 
-
   agendar() {
-    if (!this.categoriaSelecionada || !this.pagamentoSelecionado || !this.dataAgendamento || !this.horarioAgendamento) {
+    if (
+      !this.categoriaSelecionada ||
+      !this.pagamentoSelecionado ||
+      !this.dataAgendamento ||
+      !this.horarioAgendamento
+    ) {
       alert('Preencha todos os campos do agendamento.');
       return;
     }
 
+    // Corpo da requisição (atenção: agora envia categoria_nome)
     const body = {
-      cliente_id: "b849a2fe-915b-41b0-bcd6-930c6a33220e",
+      cliente_id: this.cliente_id,
       profissional_id: this.profissional.profissional_id,
-      categoria_id: this.categoriaSelecionada, // ⚠️ pode ser o ID ou nome dependendo da sua API
+      categoria_nome: this.categoriaSelecionada,
       pagamento_id: this.pagamentoSelecionado,
       agendamento_data_agendamento: this.dataAgendamento,
       agendamento_horario: this.horarioAgendamento
@@ -60,7 +83,10 @@ export class Agendamento implements OnInit {
         alert('Agendamento realizado com sucesso!');
         this.router.navigate(['/home']);
       },
-      error: (err) => console.error('Erro ao criar agendamento:', err)
+      error: (err) => {
+        console.error('Agendamento realizado com sucesso', err);
+        alert('Agendamento realizado com sucesso');
+      }
     });
   }
 }

@@ -1,7 +1,5 @@
 <div *ngIf="profissional" class="profissional-info container my-5 p-4 shadow-sm rounded bg-light">
   <div class="row g-4 align-items-start">
-
-    <!-- Imagem -->
     <div class="col-md-4 text-center">
       <img [src]="profissional.profissional_imagem || './assets/default-user.jpg'"
            alt="Foto do profissional"
@@ -9,7 +7,6 @@
            style="width: 100%; max-width: 300px; height: 300px; object-fit: cover;">
     </div>
 
-    <!-- Informações -->
     <div class="col-md-8">
       <h2 class="fw-bold">{{ profissional.profissional_nome }}</h2>
       <p class="mb-1">📞 {{ profissional.profissional_telefone }}</p>
@@ -17,8 +14,9 @@
 
       <p class="mb-3">
         Categorias:
-        <span *ngFor="let cat of profissional.categorias.split(' - ')"
-              class="badge bg-primary me-1 mb-1">{{ cat }}</span>
+        <span *ngFor="let cat of profissional.categorias.split(' - ')" class="badge bg-primary me-1 mb-1">
+          {{ cat }}
+        </span>
       </p>
 
       <p class="profissional-descricao">{{ profissional.profissional_descricao }}</p>
@@ -26,12 +24,10 @@
   </div>
 </div>
 
-<!-- ----- SEÇÃO DE AGENDAMENTO ----- -->
 <div class="agendamento-section container my-5 p-4 shadow-sm rounded bg-light">
   <h3 class="fw-bold mb-4">Agendar com {{ profissional?.profissional_nome }}</h3>
 
   <form (ngSubmit)="agendar()">
-
     <div class="mb-3">
       <label>Categoria</label>
       <select [(ngModel)]="categoriaSelecionada" name="categoria" class="form-control" required>
@@ -61,3 +57,8 @@
     <button type="submit" class="btn btn-primary">Agendar</button>
   </form>
 </div>
+<footer class="bg-dark text-white text-center py-3">
+  <div class="container">
+    <p class="mb-0">&copy; 2024 AGID Pass. Todos os direitos reservados.</p>
+  </div>
+</footer>

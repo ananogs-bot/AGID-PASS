@@ -55,13 +55,15 @@ html, body {
 
 /* src/styles.css */
 .navbar.custom-navbar {
-  background-color: #213b4b !important; /* cor desejada */
+  background-color: #ffffff !important; /* cor desejada */
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  color: black;
 }
 
 /* Navbar brand */
-.navbar.custom-navbar .navbar-brand {
-  color: #FFFFFF !important;
+.navbar.custom-navbar .navbar-brand,  a.nav-link {
+  color: #000000 !important;
+  font-weight: bolder;
 }
 
 /* Botões da navbar */
@@ -85,5 +87,5 @@ html, body {
 
 .nav-btn.active {
   background-color: #FFB300;
-  color: #0F2340;
+  color: #000000;
 }
