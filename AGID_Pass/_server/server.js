@@ -1,6 +1,5 @@
-
 import express from 'express';
-import mysql from 'mysql2';
+import mysql from 'mysql2/promise';
 import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -8,18 +7,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Conexão MySQL
-const db = mysql.createConnection({
+// Conexão MySQL (modo Promise)
+const db = await mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'Facens@123',
   database: 'AGIDPASS'
 });
 
-db.connect(err => {
-  if (err) console.log('Erro na conexão:', err);
-  else console.log('Conectado ao MySQL!');
-});
+console.log('✅ Conectado ao MySQL!');
 
 
 //////////////////////////////
@@ -120,6 +116,23 @@ app.post("/loginCliente", (req, res) => {
   });
 });
 
+app.get('/clientes/email/:email', async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const [rows] = await db.query('SELECT * FROM CLIENTE WHERE cliente_email = ?', [email]);
+
+    if (rows.length > 0) {
+      res.json({ emailExiste: true });
+    } else {
+      res.json({ emailExiste: false });
+    }
+  } catch (error) {
+    console.error('Erro ao buscar cliente:', error);
+    res.status(500).json({ error: 'Erro interno do servidor.' });
+  }
+});
+
 
 //////////////////////////////
 // Profissionais
@@ -189,7 +202,6 @@ app.get('/profissionais/:id/detalhes', (req, res) => {
     });
   });
 });
-
 
 
 // Buscar profissional por ID

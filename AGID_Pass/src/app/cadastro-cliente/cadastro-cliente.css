@@ -19,3 +19,7 @@
   background: url('/assets/fundoCadastro.jpg') no-repeat center center;
   background-size: cover;
 }
+
+.obrigatorio {
+  color: rgb(168, 1, 1);
+}
