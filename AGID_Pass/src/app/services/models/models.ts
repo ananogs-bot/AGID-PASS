@@ -8,6 +8,12 @@ export interface Cliente {
   cliente_imagem?: string;
 }
 
+export interface LoginResponse {
+  auth: boolean;
+  user?: any;   // ou você pode criar interface User { id: string; nome: string; email: string }
+  motivo?: string;
+}
+
 
 export interface Profissional {
   profissional_nome: string;

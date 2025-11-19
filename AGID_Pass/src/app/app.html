@@ -1,14 +1,30 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg py-2 px-3 custom-navbar">
   <img src="/logo.ico" alt="" width="30px">
-  <a class="navbar-brand" routerLink="/home" >AGID PASS</a>
+  <a class="navbar-brand" routerLink="/home">AGID PASS</a>
 
   <div class="ms-auto d-flex align-items-center gap-4 text-white">
-    <a routerLink="/login" class="nav-link">Login</a>
-    <a routerLink="/cadastro-cliente" routerLinkActive="active" class="nav-link">Cliente</a>
-    <a routerLink="/cadastro-profissional" routerLinkActive="active" class="nav-link">Profissional</a>
+    <!-- Se NÃO tiver login -->
+    <ng-container *ngIf="!tipoUsuario">
+      <a routerLink="/login" class="nav-link">Login</a>
+      <a routerLink="/cadastro-cliente" routerLinkActive="active" class="nav-link">Cliente</a>
+      <a routerLink="/cadastro-profissional" routerLinkActive="active" class="nav-link">Profissional</a>
+    </ng-container>
 
-    <!-- <a routerLink="/carrinho" routerLinkActive="active"  class="nav-link text-white">Carrinho</a> -->
+    <!-- Se for cliente -->
+    <ng-container *ngIf="tipoUsuario === 'cliente'">
+      <a routerLink="/catalogo" class="nav-link">Catálogo</a>
+      <!-- <a routerLink="/meus-agendamentos" class="nav-link">Meus Agendamentos</a> -->
+      <a routerLink="/perfil" class="nav-link">Perfil</a>
+      <a (click)="logout()" class="nav-link text-danger" style="cursor:pointer;">Sair</a>
+    </ng-container>
+
+    <!-- Se for profissional -->
+    <ng-container *ngIf="tipoUsuario === 'profissional'">
+      <a routerLink="/agenda-profissional" class="nav-link">Agenda</a>
+      <a routerLink="/meus-clientes" class="nav-link">Meus Clientes</a>
+      <a (click)="logout()" class="nav-link text-danger" style="cursor:pointer;">Sair</a>
+    </ng-container>
   </div>
 </nav>
 

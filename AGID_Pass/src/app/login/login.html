@@ -2,8 +2,10 @@
   <!-- Lado esquerdo: Formulário -->
   <div class="form-container p-5 d-flex flex-column justify-content-center" style="flex: 1; background-color: #F5F5F5;">
     <h2 class="mb-4">Login</h2>
+
     <form #loginForm="ngForm" (ngSubmit)="login(loginForm)" novalidate>
 
+      <!-- Tipo -->
       <div class="mb-3">
         <label>Tipo de Usuário</label>
         <select [(ngModel)]="tipo" name="tipo" class="form-control" required #tipoInput="ngModel">
@@ -16,6 +18,7 @@
         </div>
       </div>
 
+      <!-- Email -->
       <div class="mb-3">
         <label>Email</label>
         <input [(ngModel)]="email" name="email" type="email" class="form-control" required #emailInput="ngModel">
@@ -24,6 +27,7 @@
         </div>
       </div>
 
+      <!-- Senha -->
       <div class="mb-3">
         <label>Senha</label>
         <input [(ngModel)]="senha" name="senha" type="password" class="form-control" required #senhaInput="ngModel">
@@ -34,16 +38,62 @@
 
       <button type="submit" class="btn btn-primary mt-3" [disabled]="loginForm.invalid">Entrar</button>
 
-      <div class="mt-3">
-        <a class="btn" routerLink="/esqueci-senha">Esqueci a senha</a>
-        <a class="btn" routerLink="/cadastro-cliente">Cadastrar-se</a>
-      </div>
+      <br>
+
+      <button type="button" class="btn mt-2" (click)="abrirEsqueciSenha()">Esqueci a senha</button>
+      <button type="button" class="btn mt-2" (click)="abrirEsqueciEmail()">Esqueci o e-mail</button>
+      <a class="btn mt-2" routerLink="/cadastro-cliente">Cadastrar-se</a>
     </form>
+
+    <!-- Modal Esqueci Senha -->
+    <div *ngIf="mostrarEsqueciSenha" class="mt-4 p-3 border rounded bg-white shadow-sm">
+      <h5>Recuperar Senha</h5>
+      <label>Informe seu CPF</label>
+      <input [(ngModel)]="cpfRecuperacao" name="cpfRecuperacao" class="form-control mb-2">
+      <button class="btn btn-primary" (click)="recuperarSenha()">Enviar senha temporária</button>
+      <button class="btn btn-link" (click)="fecharModal()">Fechar</button>
+    </div>
+
+    <!-- Modal Esqueci Email -->
+    <div *ngIf="mostrarEsqueciEmail" class="mt-4 p-3 border rounded bg-white shadow-sm">
+      <h5>Recuperar E-mail</h5>
+
+      <!-- Etapa 1 -->
+      <div *ngIf="!mostrarConfirmacaoEnvio">
+        <label>Informe seu CPF</label>
+        <input [(ngModel)]="cpfRecuperacao" name="cpfRecuperacaoEmail" class="form-control mb-2">
+        <button class="btn btn-primary" (click)="recuperarEmail()">Ver informações</button>
+        <button class="btn btn-link" (click)="fecharModal()">Fechar</button>
+      </div>
+
+      <!-- Etapa 2 -->
+      <div *ngIf="mostrarConfirmacaoEnvio" class="mt-3">
+        <p>Telefone cadastrado: <strong>{{ telefoneMascarado }}</strong></p>
+        <p>E-mail encontrado: <strong>{{ emailMascarado }}</strong></p>
+        <p>Deseja receber uma notificação pelo celular com o e-mail completo?</p>
+        <button class="btn btn-success me-2" (click)="confirmarEnvioNotificacao()">Sim</button>
+        <button class="btn btn-outline-secondary" (click)="fecharModal()">Não</button>
+      </div>
+    </div>
+
+    <!-- Mensagem de e-mail não cadastrado -->
+    <!-- Mensagem de e-mail não cadastrado -->
+    <div *ngIf="mostrarCadastroSugestao" class="alert alert-warning mt-3">
+      <p>E-mail não cadastrado. O que deseja fazer?</p>
+      <button class="btn btn-primary btn-sm me-2" (click)="abrirEsqueciEmail()">Esqueci meu e-mail</button>
+      <button class="btn btn-success btn-sm me-2" (click)="irParaCadastro()">Cadastrar-se</button>
+      <button class="btn btn-outline-secondary btn-sm" (click)="fecharCadastroSugestao()">Cancelar</button>
+    </div>
+
   </div>
 
   <!-- Lado direito: Imagem -->
-  <div class="image-container" style="flex: 1; background-image: url('./assets/fundoCadastro.jpg'); background-size: cover; background-position: center;">
-    <!-- Pode adicionar um overlay se quiser escurecer a imagem -->
+  <div class="image-container"
+    style="flex: 1; background-image: url('./assets/fundoCadastro.jpg'); background-size: cover; background-position: center;">
     <div style="background-color: rgba(0,0,0,0.3); width: 100%; height: 100%;"></div>
   </div>
 </div>
+
+<footer class="bg-dark text-white text-center py-3">
+  &copy; 2025 AGID PASS. Todos os direitos reservados.
+</footer>

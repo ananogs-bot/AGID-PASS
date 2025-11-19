@@ -1,0 +1,100 @@
+<div class="agenda-container">
+  <h2>Minha Agenda Semanal</h2>
+
+  <div class="nova-disponibilidade">
+    <h3>Adicionar nova disponibilidade</h3>
+
+    <div class="form-linha">
+      <label for="dia">Dia da Semana</label>
+      <select id="dia" [(ngModel)]="novoDia">
+        <option value="">Selecione...</option>
+        <option *ngFor="let dia of diasSemana" [value]="dia.valor">
+          {{ dia.nome }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-linha">
+      <label for="horaInicio">Hora de Início</label>
+      <input id="horaInicio" type="time" [(ngModel)]="horaInicio" />
+    </div>
+
+    <div class="form-linha">
+      <label for="horaFim">Hora de Fim</label>
+      <input id="horaFim" type="time" [(ngModel)]="horaFim" />
+    </div>
+
+    <div class="form-linha">
+      <label for="duracao">Duração da Sessão</label>
+      <select id="duracao" [(ngModel)]="duracaoSessao">
+        <option value="">Selecione...</option>
+        <option *ngFor="let d of duracoes" [value]="d.valor">{{ d.label }}</option>
+      </select>
+    </div>
+
+    <button class="btn-adicionar" (click)="adicionarDisponibilidade()">+ Adicionar</button>
+  </div>
+
+  <hr />
+
+  <h3>Minhas Disponibilidades</h3>
+
+  <div *ngIf="disponibilidades.length > 0; else vazio">
+    <table class="tabela">
+      <thead>
+        <tr>
+          <th>Dia</th>
+          <th>Início</th>
+          <th>Fim</th>
+          <th>Duração</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of disponibilidades">
+          <td>{{ traduzirDia(d.dia_semana) }}</td>
+          <td>{{ d.hora_inicio }}</td>
+          <td>{{ d.hora_fim }}</td>
+          <td>{{ d.duracao_sessao || '—' }}</td>
+          <td>
+            <button class="btn-remover" (click)="removerDisponibilidade(d.disponibilidade_id)">Remover</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #vazio>
+    <p class="sem-dados">Você ainda não adicionou nenhuma disponibilidade.</p>
+  </ng-template>
+
+  <hr />
+
+  <h3>Calendário Semanal</h3>
+  <table class="tabela">
+    <thead>
+      <tr>
+        <th>Horário</th>
+        <th *ngFor="let dia of diasSemana">{{ dia.nome }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let hora of horariosPorDia[diasSemana[0].valor]">
+        <td>{{ hora }}</td>
+        <td *ngFor="let dia of diasSemana">
+          <ng-container *ngIf="obterAgendamento(dia, hora) as agendamento; else livre">
+            <div class="agendado">
+              <strong>{{ agendamento.nome_cliente }}</strong><br>
+              <small>{{ agendamento.email_cliente }}</small><br>
+              <em>{{ agendamento.categoria }}</em><br>
+              <button class="btn-remover" (click)="removerAgendamento(agendamento.id)">Remover</button>
+            </div>
+          </ng-container>
+          <ng-template #livre>
+            <div class="livre">Livre</div>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

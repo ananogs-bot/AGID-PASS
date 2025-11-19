@@ -1,0 +1,143 @@
+.agenda-container {
+  max-width: 1100px; /* expandido */
+  margin: 40px auto;
+  background: #f9f9f9;
+  border-radius: 14px;
+  padding: 30px 40px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  font-family: 'Poppins', sans-serif;
+  color: #16325B;
+  transition: all 0.3s ease;
+}
+
+.agenda-container:hover {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+h2, h3 {
+  color: #16325B;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.nova-disponibilidade {
+  margin-top: 25px;
+  background: #fff;
+  padding: 20px 25px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+}
+
+.form-linha {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+select,
+input[type="time"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+  transition: 0.2s;
+}
+
+select:focus,
+input[type="time"]:focus {
+  border-color: #227B94;
+  outline: none;
+  box-shadow: 0 0 5px rgba(34, 123, 148, 0.3);
+}
+
+.btn-adicionar {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #227B94;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: all 0.2s ease;
+}
+
+.btn-adicionar:hover {
+  background-color: #16325B;
+  transform: translateY(-2px);
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.tabela th,
+.tabela td {
+  padding: 12px 10px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tabela th {
+  background-color: #227B94;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.tabela tr:hover td {
+  background: #f4fbfd;
+}
+
+.btn-remover {
+  padding: 6px 12px;
+  background: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.btn-remover:hover {
+  background: #b52b27;
+}
+
+.sem-dados {
+  text-align: center;
+  color: #777;
+  margin-top: 25px;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .agenda-container {
+    padding: 20px;
+    max-width: 95%;
+  }
+
+  .tabela th,
+  .tabela td {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .btn-adicionar {
+    font-size: 14px;
+  }
+}

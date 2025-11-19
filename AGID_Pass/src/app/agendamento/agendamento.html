@@ -1,10 +1,8 @@
 <div *ngIf="profissional" class="profissional-info container my-5 p-4 shadow-sm rounded bg-light">
   <div class="row g-4 align-items-start">
     <div class="col-md-4 text-center">
-      <img [src]="profissional.profissional_imagem || './assets/default-user.jpg'"
-           alt="Foto do profissional"
-           class="img-fluid rounded border"
-           style="width: 100%; max-width: 300px; height: 300px; object-fit: cover;">
+      <img [src]="profissional.profissional_imagem || './assets/default-user.jpg'" alt="Foto do profissional"
+        class="img-fluid rounded border" style="width: 100%; max-width: 300px; height: 300px; object-fit: cover;">
     </div>
 
     <div class="col-md-8">
@@ -14,8 +12,8 @@
 
       <p class="mb-3">
         Categorias:
-        <span *ngFor="let cat of profissional.categorias.split(' - ')" class="badge bg-primary me-1 mb-1">
-          {{ cat }}
+        <span *ngFor="let cat of profissional.categoriasList" class="badge bg-primary me-1 mb-1">
+          {{ cat.categoria_nome }}
         </span>
       </p>
 
@@ -31,8 +29,11 @@
     <div class="mb-3">
       <label>Categoria</label>
       <select [(ngModel)]="categoriaSelecionada" name="categoria" class="form-control" required>
-        <option *ngFor="let cat of profissional.categoriasList" [value]="cat.categoria_id">{{ cat.categoria_nome }}</option>
+        <option *ngFor="let categoria of profissional?.categoriasList" [value]="categoria.categoria_nome">
+          {{ categoria.categoria_nome }}
+        </option>
       </select>
+
     </div>
 
     <div class="mb-3">
@@ -57,8 +58,7 @@
     <button type="submit" class="btn btn-primary">Agendar</button>
   </form>
 </div>
+
 <footer class="bg-dark text-white text-center py-3">
-  <div class="container">
-    <p class="mb-0">&copy; 2024 AGID Pass. Todos os direitos reservados.</p>
-  </div>
+  &copy; 2025 AGID PASS. Todos os direitos reservados.
 </footer>

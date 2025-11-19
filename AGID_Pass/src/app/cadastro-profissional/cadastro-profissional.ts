@@ -91,6 +91,7 @@ export class CadastroProfissional implements OnInit {
 
     this.profissionalService.cadastrarProfissional(body).subscribe({
       next: res => {
+        alert('Profissional cadastrado com sucesso!');
         console.log('Profissional cadastrado', res);
         form.resetForm();
       },

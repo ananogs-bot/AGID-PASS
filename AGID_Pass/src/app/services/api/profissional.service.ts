@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Profissional} from '../models/models';
+import { Profissional } from '../models/models';
 import { getProfissional } from '../models/models';
 
 export interface Categoria {
@@ -16,7 +16,7 @@ export class ProfissionalService {
   private baseUrl = 'http://localhost:3000/profissionais';
   private categoriaUrl = 'http://localhost:3000/categorias'; // rota para categorias
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getProfissionais(): Observable<getProfissional[]> {
     console.log('Buscando profissionais');
@@ -37,6 +37,15 @@ export class ProfissionalService {
     console.log('Deletando profissional com ID:', profissionalId);
     return this.http.delete(`${this.baseUrl}/${profissionalId}`);
   }
+
+  getDisponibilidade(profissionalId: string) {
+    return this.http.get<any[]>(`${this.baseUrl}/disponibilidade/${profissionalId}`);
+  }
+
+  addDisponibilidade(data: any) {
+    return this.http.post(`${this.baseUrl}/disponibilidade`, data);
+  }
+
 
   // Novo método para pegar categorias
   getCategorias(): Observable<Categoria[]> {

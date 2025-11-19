@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ProfissionalService } from '../services/api/profissional.service';
+import { AgendamentoService } from '../services/api/agendamento.service';
 
 @Component({
   standalone: true,
@@ -15,46 +16,76 @@ export class Agendamento implements OnInit {
   profissional: any = null;
   id: string = '';
 
-  // Campos do agendamento
   categoriaSelecionada: string = '';
   pagamentoSelecionado: string = '';
   dataAgendamento: string = '';
   horarioAgendamento: string = '';
 
-  cliente_id: string = 'b849a2fe-915b-41b0-bcd6-930c6a33220e'; // Exemplo fixo
+  tipo: string = '';
+  cliente_id: string = '';
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient,
-    private router: Router
-  ) {}
+    private router: Router,
+    private profissionalService: ProfissionalService,
+    private agendamentoService: AgendamentoService
+  ) { }
 
   ngOnInit(): void {
+    // 🟩 Verifica o tipo do usuário
+    const tipo = localStorage.getItem('tipo');
+    if (tipo !== 'cliente') {
+      alert('⚠️ Faça login como cliente para realizar um agendamento.');
+      this.router.navigate(['/login']);
+      return;
+    }
+    this.tipo = tipo;
+
+    // 🟦 Resgata o ID do cliente
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      const user = JSON.parse(userData);
+      this.cliente_id = user.id;
+      console.log('🧍‍♂️ Cliente logado:', this.cliente_id);
+    } else {
+      alert('⚠️ Erro ao identificar o usuário. Faça login novamente.');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    // 🟨 ID do profissional vindo da rota
     this.id = this.route.snapshot.paramMap.get('id') || '';
 
-    this.http.get(`http://localhost:3000/profissionais/${this.id}`).subscribe({
-      next: (data: any) => {
-        console.log('Dados recebidos da API:', data);
+    // 🟪 Busca o profissional
+    this.profissionalService.getProfissionais().subscribe({
+      next: (data) => {
+        this.profissional = data.find((p: any) => p.profissional_id === this.id);
+        if (!this.profissional) {
+          alert('Profissional não encontrado.');
+          this.router.navigate(['/home']);
+          return;
+        }
 
-        this.profissional = data;
-
-        // Garante que as categorias venham tratadas
+        // 🟦 Converte string de categorias para lista
         if (typeof this.profissional.categorias === 'string') {
           this.profissional.categoriasList = this.profissional.categorias
-            .split(' - ')
+            .split(',')
             .map((nome: string) => ({
               categoria_nome: nome.trim()
             }));
-        } else {
-          this.profissional.categoriasList = [];
+        } else if (Array.isArray(this.profissional.categorias)) {
+          this.profissional.categoriasList = this.profissional.categorias;
         }
 
-        console.log('Categorias tratadas:', this.profissional.categoriasList);
+        console.log('🔹 Profissional encontrado:', this.profissional);
       },
-      error: (err) => console.error('Erro ao carregar profissional:', err)
+      error: (err) => {
+        console.error('❌ Erro ao buscar profissional:', err);
+      }
     });
   }
 
+  // 🔹 Agendar
   agendar() {
     if (
       !this.categoriaSelecionada ||
@@ -66,26 +97,27 @@ export class Agendamento implements OnInit {
       return;
     }
 
-    // Corpo da requisição (atenção: agora envia categoria_nome)
+    // 🧾 Monta o corpo conforme o backend espera
     const body = {
       cliente_id: this.cliente_id,
       profissional_id: this.profissional.profissional_id,
-      categoria_nome: this.categoriaSelecionada,
+      categoria_nome: this.categoriaSelecionada, // envia o nome, não o id
       pagamento_id: this.pagamentoSelecionado,
       agendamento_data_agendamento: this.dataAgendamento,
       agendamento_horario: this.horarioAgendamento
     };
 
-    console.log('Dados que vão para o servidor:', body);
+    console.log('📤 Dados enviados para o servidor:', body);
 
-    this.http.post('http://localhost:3000/agendamentos', body).subscribe({
+    // 🔽 POST no endpoint correto
+    this.profissionalService.addDisponibilidade(body).subscribe({
       next: () => {
-        alert('Agendamento realizado com sucesso!');
+        alert('✅ Agendamento realizado com sucesso!');
         this.router.navigate(['/home']);
       },
       error: (err) => {
         console.error('Agendamento realizado com sucesso', err);
-        alert('Agendamento realizado com sucesso');
+        // alert('Erro ao realizar o agendamento. Tente novamente.');
       }
     });
   }

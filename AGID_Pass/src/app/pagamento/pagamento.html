@@ -1,0 +1,74 @@
+<div class="container py-4">
+  <h2 class="mb-3">Resumo do Pedido</h2>
+
+  <button class="btn btn-primary w-100" routerLink="/carrinho">Voltar</button>
+
+  <br><br>
+  <ul class="list-group mb-3">
+    <li class="list-group-item d-flex justify-content-between" *ngFor="let item of carrinho">
+      <div>
+        <strong>{{ item.nome }}</strong><br />
+        <small class="text-muted">Quantidade: {{ item.quantidade || 1 }}</small>
+      </div>
+      <div>R${{ (item.preco * (item.quantidade || 1)) | number:'1.2-2' }}</div>
+    </li>
+    <li class="list-group-item d-flex justify-content-between fw-bold">
+      Total
+      <div>R${{ total | number:'1.2-2' }}</div>
+    </li>
+  </ul>
+
+  <!-- Pagamento pendente salvo -->
+  <div *ngIf="pagamentoPendente" class="alert alert-info">
+    Existe um pagamento pendente ({{ pagamentoPendente.metodo }}) criado em
+    {{ pagamentoPendente.criadoEm | date:'short' }}.
+    <div class="mt-2">
+      <button class="btn btn-sm btn-primary me-2" (click)="retentarPagamento()">Retomar pagamento</button>
+      <button class="btn btn-sm btn-outline-danger" (click)="cancelarPagamentoPendente()">Cancelar pendência</button>
+    </div>
+  </div>
+
+  <!-- Mensagens -->
+  <div *ngIf="pagamentoStatus === 'erroCartao'" class="alert alert-danger">
+    Dados do cartão inválidos. Verifique número, validade e CVV.
+  </div>
+
+  <div *ngIf="pagamentoStatus === 'sucesso'" class="alert alert-success">
+    Pagamento realizado com sucesso! Redirecionando para seu perfil...
+  </div>
+
+  <!-- Formulário Cartão -->
+  <div *ngIf="pagamentoStatus !== 'sucesso'" class="card p-3 mb-3">
+    <h5>Pagamento com Cartão</h5>
+    <form (ngSubmit)="pagarCartao()" #cartaoForm="ngForm" novalidate>
+      <input class="form-control mb-2" type="text" placeholder="Número do cartão" [(ngModel)]="numeroCartao" name="numeroCartao" maxlength="19">
+      <input class="form-control mb-2" type="text" placeholder="Nome (igual ao cartão)" [(ngModel)]="nomeCartao" name="nomeCartao">
+      <div class="d-flex gap-2 mb-2">
+        <input class="form-control" type="text" placeholder="MM/AA" [(ngModel)]="validade" name="validade" maxlength="5">
+        <input class="form-control" type="text" placeholder="CVV" [(ngModel)]="cvv" name="cvv" maxlength="4">
+      </div>
+      <button class="btn btn-primary w-100" type="submit">Pagar com Cartão</button>
+    </form>
+  </div>
+
+  <!-- PIX -->
+  <div class="card p-3 mb-3">
+    <h5>Pagamento PIX</h5>
+
+    <div *ngIf="pagamentoStatus === 'pendente'" class="alert alert-info">
+      Pagamento em andamento. Referência: <strong>{{ pixReferencia }}</strong><br>
+      Tempo restante: <strong>{{ pixTempoRestante }}s</strong><br>
+      <button class="btn btn-sm btn-success mt-2" (click)="confirmarPIX()">Simular confirmação do PIX</button>
+    </div>
+
+    <div *ngIf="pagamentoStatus === 'tempoEsgotado'" class="alert alert-warning">
+      Tempo limite do PIX expirou.<br>
+      <button class="btn btn-sm btn-primary mt-2" (click)="gerarNovoPIX()">Gerar novo código PIX</button>
+    </div>
+
+    <button class="btn btn-success w-100 mt-3" (click)="pagarPIX()" *ngIf="!pagamentoStatus || pagamentoStatus === 'sucesso'">
+      Gerar referência PIX
+    </button>
+  </div>
+
+</div>

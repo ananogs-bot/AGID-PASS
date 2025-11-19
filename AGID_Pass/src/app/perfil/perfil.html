@@ -1,0 +1,66 @@
+<div class="perfil-container" *ngIf="dadosUsuario; else carregando">
+  <div class="perfil-header text-center">
+    <img
+      [src]="dadosUsuario.cliente_imagem || dadosUsuario.profissional_imagem || './assets/default-user.jpg'"
+      alt="Foto de perfil"
+      class="foto-perfil"
+    />
+    <h2>{{ dadosUsuario.cliente_nome || dadosUsuario.profissional_nome }}</h2>
+    <p>{{ dadosUsuario.cliente_email || dadosUsuario.profissional_email }}</p>
+  </div>
+
+  <div class="perfil-detalhes">
+    <div><strong>Telefone:</strong> {{ dadosUsuario.cliente_telefone || dadosUsuario.profissional_telefone }}</div>
+    <div><strong>Endereço:</strong> {{ dadosUsuario.cliente_endereco || dadosUsuario.profissional_endereco }}</div>
+    <div *ngIf="dadosUsuario.cliente_cpf || dadosUsuario.profissional_cpf">
+      <strong>CPF:</strong> {{ dadosUsuario.cliente_cpf || dadosUsuario.profissional_cpf }}
+    </div>
+  </div>
+
+  <div class="botoes-container">
+    <button class="btn-editar" (click)="toggleEditar()">Editar Informações</button>
+    <button class="btn-senha" (click)="toggleTrocarSenha()">Trocar Senha</button>
+  </div>
+
+  <!-- Formulário de edição -->
+  <div *ngIf="editando" class="form-editar">
+    <h4>Editar Informações</h4>
+    <label>Nome:</label>
+    <input [(ngModel)]="dadosUsuario.cliente_nome" placeholder="Nome" />
+
+    <label>Email:</label>
+    <input [(ngModel)]="dadosUsuario.cliente_email" placeholder="Email" />
+
+    <label>Telefone:</label>
+    <input [(ngModel)]="dadosUsuario.cliente_telefone" placeholder="Telefone" />
+
+    <label>Endereço:</label>
+    <input [(ngModel)]="dadosUsuario.cliente_endereco" placeholder="Endereço" />
+
+    <button class="btn-salvar" (click)="salvarAlteracoes()">Salvar</button>
+  </div>
+
+  <!-- Formulário de troca de senha -->
+  <div *ngIf="trocandoSenha" class="form-senha">
+    <h4>Trocar Senha</h4>
+
+    <label>Senha atual:</label>
+    <input type="password" [(ngModel)]="senhaAtual" />
+
+    <label>Nova senha:</label>
+    <input type="password" [(ngModel)]="novaSenha" />
+
+    <label>Confirmar nova senha:</label>
+    <input type="password" [(ngModel)]="confirmarSenha" />
+
+    <button class="btn-salvar" (click)="alterarSenha()">Confirmar Troca</button>
+  </div>
+</div>
+
+<ng-template #carregando>
+  <p>Carregando perfil...</p>
+</ng-template>
+
+<footer class="bg-dark text-white text-center py-3">
+  &copy; 2025 AGID PASS. Todos os direitos reservados.
+</footer>
